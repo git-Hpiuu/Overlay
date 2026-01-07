@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Scoreboard Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .scoreboard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.8);
+      padding: 12px 30px;
+      font-size: 32px;
+      width: 100vw;
+      box-sizing: border-box;
+    }
+
+    .team.blue { color: #4da6ff; }
+    .team.red { color: #ff4d4d; }
+
+    .center {
+      font-size: 22px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scoreboard">
+  <div class="team blue" id="blue"></div>
+  <div class="center" id="meta"></div>
+  <div class="team red" id="red"></div>
+</div>
+
+<script>
+const JSON_URL = "https://script.google.com/macros/s/AKfycbzBQ7fhOt-Mpaowm1gwJHqFFWooGXA17naHsbjnyddek4WR_hkr2dCt5lxLe84SMg-Ojw/exec";
+
+async function loadScoreboard() {
+  const res = await fetch(JSON_URL);
+  const data = await res.json();
+
+  document.getElementById("blue").innerText =
+    `${data.scoreboard.blue.team} ${data.scoreboard.blue.score}`;
+
+  document.getElementById("red").innerText =
+    `${data.scoreboard.red.score} ${data.scoreboard.red.team}`;
+
+  document.getElementById("meta").innerText =
+    `${data.scoreboard.match_id} | ${data.scoreboard.format}`;
+}
+
+loadScoreboard();
+setInterval(loadScoreboard, 2000);
+</script>
+
+</body>
+</html>
